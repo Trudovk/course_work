@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+  <h1>{{item.name}}</h1>
+  <p>{{item.price}} ₽</p>
+  <p>{{item.description}}</p>
+  <p>В наличии {{item.stock}} шт.</p>
+  <p>В корзине {{item.quantity}} шт.</p>
+</div>
+<!-- #создай кнопку добавить в корзину add_to_cart-->
+<a href="{% url 'add_to_cart' item.id %}">+</a>
+<a href="{% url 'remove_from_cart' item.id %}">-</a>
+
+<h2>Отзывы</h2>
+<ul>
+  {% for review in reviews %}
+  <li>
+    <p>{{review.customer}}</p>
+    <p>Оценка: {{review.rating}}</p>
+    <p>Коментарий: {{review.description}}</p>
+    <p>{{ review.review_date|date:"d F Y в H:i" }}</p>
+  </li>
+  {% endfor %}
+</ul>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Отправить</button>
+</form>
+<!-- напиши форму чтобы отправить коментарий в бд -->
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Корзина</h1>
+{% for item in items %}
+<div>
+  <h2>{{ item.name }}</h2>
+  <p>Количество: {{ item.quantity }}</p>
+  <p>Сумма: {{ item.price }} ₽</p>
+  <a href="{% url 'remove_from_cart_in_cart' item.id %}">Удалить</a>
+  <a href="{% url 'add_to_cart_in_cart' item.id %}">Добавить в корзину</a>
+</div>
+<!-- форма чтобы отправить корзину в order-->
+
+{% endfor %}
+<p>Общая сумма: {{ total_payment_amount }} ₽</p>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Отправить</button>
+</form>
+{% endblock %}

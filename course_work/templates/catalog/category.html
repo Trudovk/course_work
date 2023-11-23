@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<div>
+  {{category.name}}
+  <ul>
+    {% for item in items %}
+    <li>
+      <a href="/i/{{ item.id }}">{{ item.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
