@@ -3,8 +3,6 @@ services:
     image: mysql
     environment:
       MYSQL_DATABASE: "std_2076_course_work"
-      MYSQL_USER: root
-      MYSQL_PASSWORD: toor
       MYSQL_ROOT_PASSWORD: toor
     ports:
       - "3306:3306"

@@ -1,9 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin
 from . import views
+from drf.urls import urlpatterns as drf_urls
 
 
-urlpatterns = [
+urlpatterns = (
+    drf_urls +
+    [
     path('catalog/', views.categories, name='catalog'),
     path('catalog/<str:category>/', views.catalog, name='category'),
     path('i/<int:item_id>/', views.item, name='item'),
@@ -14,4 +17,5 @@ urlpatterns = [
     path('cart/remove_from_cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-]
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+])
