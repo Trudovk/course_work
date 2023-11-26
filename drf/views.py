@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from .serializers import ItemSerializer, CategorySerializer
 from collections import OrderedDict
+from rest_framework import filters
 
 class AdvicePagination(PageNumberPagination):
     page_size = 5
@@ -20,6 +21,8 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = AdvicePagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'description']
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
