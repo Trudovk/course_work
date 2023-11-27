@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib import admin
+from simple_history.models import HistoricalRecords
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
+    history = HistoricalRecords()
     def __str__(self):
         return self.title
     class Meta:

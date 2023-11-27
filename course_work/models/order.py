@@ -3,7 +3,7 @@ from .item import Item
 from .promocode import Promocode
 from django.contrib import admin
 from django.utils.html import format_html
-
+from simple_history.models import HistoricalRecords
 
 class PaymentMethodChoices(models.TextChoices):
     ON_PICKUP = "P", "При получении"
@@ -37,6 +37,7 @@ class Order(models.Model):
     )
     delivery_address = models.TextField(blank=True, null=True)
     items = models.ManyToManyField(Item, through=OrderItem)
+    history = HistoricalRecords()
     def get_item_list(self):
         return ", ".join([f"{p.item.name} - {p.quantity}" for p in self.orderitem_set.all()])
     class Meta:

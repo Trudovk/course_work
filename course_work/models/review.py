@@ -1,6 +1,8 @@
 from django.db import models
 from .item import Item
 from django.contrib import admin
+from simple_history.models import HistoricalRecords
+from simple_history.admin import SimpleHistoryAdmin
 
 class Review(models.Model):
     customer = models.CharField(max_length=100)
@@ -16,12 +18,13 @@ class Review(models.Model):
     product = models.ForeignKey(Item, on_delete=models.CASCADE)
     description = models.TextField()
     review_date = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
     class Meta:
        verbose_name_plural = "Отзывы"
        verbose_name = "Отзыв"
 
 @admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
+class ReviewAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
     list_display = ["customer", "rating", "product", "description", "review_date"]
     list_filter = ["review_date", "product", "rating"]
     date_hierarchy = "review_date"

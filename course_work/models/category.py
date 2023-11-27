@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib import admin
+from simple_history.models import HistoricalRecords
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=32, unique=True)
+    history = HistoricalRecords()
     def __str__(self):
         return self.name
     class Meta:
