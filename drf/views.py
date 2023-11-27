@@ -9,6 +9,8 @@ from .serializers import ItemSerializer, CategorySerializer, ReviewSerializer
 from collections import OrderedDict
 from rest_framework import filters
 from django.db.models import Q
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 class AdvicePagination(PageNumberPagination):
     page_size = 5
@@ -21,13 +23,22 @@ class ItemViewSet(viewsets.ModelViewSet):
     """
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [permissions.IsAuthenticated]
     pagination_class = AdvicePagination
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
 
     def get_queryset(self):
         return Item.objects.filter(~Q(price=0) | ~Q(stock=0))
+    
+    @action(detail=False, methods=['get'])
+    def by_category(self, request):
+        category = request.query_params.get('category', None)
+        if category is not None:
+            items = Item.objects.filter(category__name=category)
+            serializer = self.get_serializer(items, many=True)
+            return Response(serializer.data)
+        else:
+            return Response({"error": "Category parameter is required"}, status=400)
 
 
 
