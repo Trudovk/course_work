@@ -4,6 +4,7 @@ from .promocode import Promocode
 from django.contrib import admin
 from django.utils.html import format_html
 from simple_history.models import HistoricalRecords
+from import_export.admin import ImportExportModelAdmin
 
 class PaymentMethodChoices(models.TextChoices):
     ON_PICKUP = "P", "При получении"
@@ -49,7 +50,7 @@ class OrderItemInline(admin.TabularInline):
     extra = 0
     
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["id", "first_name", "last_name", "phone", "notes", "order_date", "used_promocode", "payment_amount", "payment_method", "delivery_method", "delivery_address", "get_item_list"]
     inlines = [OrderItemInline]
     list_filter = ["order_date", "payment_method", "delivery_method"]

@@ -3,7 +3,8 @@ from .category import Category
 from django.contrib import admin
 from simple_history.models import HistoricalRecords
 from simple_history.admin import SimpleHistoryAdmin
-
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
@@ -13,9 +14,6 @@ class Item(models.Model):
     stock = models.PositiveIntegerField()
     history = HistoricalRecords()
 
-    def get_history(self):
-        return ", ".join([f"{h.history_date} - {h.history_type}" for h in self.history.all()])
-
     def __str__(self):
         return self.name
     
@@ -23,8 +21,9 @@ class Item(models.Model):
        verbose_name_plural = "Товары"
        verbose_name = "Товар"
 
+
 @admin.register(Item)
-class ItemAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+class ItemAdmin(ImportExportModelAdmin, SimpleHistoryAdmin, admin.ModelAdmin):
     list_display = ["name", "price", "description", "category", "stock"]
     list_filter = ["category"]
     search_fields = ["name"]

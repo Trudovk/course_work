@@ -3,6 +3,7 @@ from .item import Item
 from django.contrib import admin
 from simple_history.models import HistoricalRecords
 from simple_history.admin import SimpleHistoryAdmin
+from import_export.admin import ImportExportModelAdmin
 
 class Review(models.Model):
     customer = models.CharField(max_length=100)
@@ -24,7 +25,7 @@ class Review(models.Model):
        verbose_name = "Отзыв"
 
 @admin.register(Review)
-class ReviewAdmin(SimpleHistoryAdmin, admin.ModelAdmin):
+class ReviewAdmin(ImportExportModelAdmin, SimpleHistoryAdmin, admin.ModelAdmin):
     list_display = ["customer", "rating", "product", "description", "review_date"]
     list_filter = ["review_date", "product", "rating"]
     date_hierarchy = "review_date"

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'course_work',
     'rest_framework',
     'drf',
-    'simple_history'
+    'simple_history',
+    'import_export',
 ]
 
 MIDDLEWARE = [

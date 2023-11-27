@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from simple_history.models import HistoricalRecords
+from import_export.admin import ImportExportModelAdmin
 
 class Article(models.Model):
     title = models.CharField(max_length=100)
@@ -13,6 +14,6 @@ class Article(models.Model):
        verbose_name = "Статья"
 
 @admin.register(Article)
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["title", "content"]
     search_fields = ["title", "content"]

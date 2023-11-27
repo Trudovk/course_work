@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib import admin
 from simple_history.models import HistoricalRecords
+from import_export.admin import ImportExportModelAdmin
 
 class Promocode(models.Model):
     code = models.CharField(max_length=10)
@@ -12,6 +13,6 @@ class Promocode(models.Model):
        verbose_name = "Промокод"
 
 @admin.register(Promocode)
-class PromocodeAdmin(admin.ModelAdmin):
+class PromocodeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ["code", "discount_fixed", "discount_percent"]
     search_fields = ["code"]
