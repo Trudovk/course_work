@@ -17,5 +17,4 @@ urlpatterns = (
     path('cart/remove_from_cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ])
