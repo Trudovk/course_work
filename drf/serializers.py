@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from course_work.models import Item, Category
+from course_work.models import Item, Category, Review
 
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +11,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'

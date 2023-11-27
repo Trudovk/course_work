@@ -1,12 +1,14 @@
+import datetime
 from django.shortcuts import render
-from course_work.models import Category, Item
+from course_work.models import Category, Item, Review
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from .serializers import ItemSerializer, CategorySerializer
+from .serializers import ItemSerializer, CategorySerializer, ReviewSerializer
 from collections import OrderedDict
 from rest_framework import filters
+from django.db.models import Q
 
 class AdvicePagination(PageNumberPagination):
     page_size = 5
@@ -24,6 +26,12 @@ class ItemViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'description']
 
+    def get_queryset(self):
+        return Item.objects.filter(~Q(price=0) | ~Q(stock=0))
+
+
+
+
 class CategoryViewSet(viewsets.ModelViewSet):
     """
     API c категориями
@@ -31,4 +39,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticated]
-    
+
+class ReviewViewSet(viewsets.ModelViewSet):
+    """
+    API с отзывами
+    """
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = AdvicePagination
+
+
+class TodayFiveStarsComentsViewSet(viewsets.ModelViewSet):
+    """
+    API с отзывами с рейтингом 5 за сегодня c содержанием
+    """
+    queryset = Review.objects.filter()
+    serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Review.objects.filter(Q(review_date__gte=datetime.date.today()) & Q(rating=5) & ~Q(description='')) 
+    # что то хорошее придумаю позже
