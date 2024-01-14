@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib import admin
 from simple_history.models import HistoricalRecords
 from import_export.admin import ImportExportModelAdmin
 
@@ -12,8 +11,3 @@ class Category(models.Model):
     class Meta:
        verbose_name_plural = "Категории"
        verbose_name = "Категория"
-
-@admin.register(Category)
-class CategoryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["name", "slug"]
-    search_fields = ["name", "slug"]

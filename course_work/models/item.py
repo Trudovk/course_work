@@ -24,9 +24,4 @@ class Item(models.Model):
     
 
 
-@admin.register(Item)
-class ItemAdmin(ImportExportModelAdmin, SimpleHistoryAdmin, admin.ModelAdmin):
-    list_display = ["name", "price", "description", "category", "stock"]
-    list_filter = ["category"]
-    search_fields = ["name"]
-    list_display_links = ["name"]
+

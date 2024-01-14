@@ -49,12 +49,3 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
     
-@admin.register(Order)
-class OrderAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["id", "first_name", "last_name", "phone", "notes", "order_date", "used_promocode", "payment_amount", "payment_method", "delivery_method", "delivery_address", "get_item_list"]
-    inlines = [OrderItemInline]
-    list_filter = ["order_date", "payment_method", "delivery_method"]
-    date_hierarchy = "order_date"
-    search_fields = ["first_name", "last_name", "phone", "email", "notes", "used_promocode", "payment_amount", "delivery_address"]
-    readonly_fields = ["order_date", "payment_amount", "get_item_list"]
-    short_description = "Список товаров"

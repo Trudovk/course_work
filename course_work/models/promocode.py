@@ -12,7 +12,3 @@ class Promocode(models.Model):
        verbose_name_plural = "Промокоды"
        verbose_name = "Промокод"
 
-@admin.register(Promocode)
-class PromocodeAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["code", "discount_fixed", "discount_percent"]
-    search_fields = ["code"]

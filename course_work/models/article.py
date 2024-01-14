@@ -13,7 +13,3 @@ class Article(models.Model):
        verbose_name_plural = "Статьи"
        verbose_name = "Статья"
 
-@admin.register(Article)
-class ArticleAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    list_display = ["title", "content"]
-    search_fields = ["title", "content"]

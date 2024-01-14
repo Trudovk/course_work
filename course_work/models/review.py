@@ -24,10 +24,4 @@ class Review(models.Model):
        verbose_name_plural = "Отзывы"
        verbose_name = "Отзыв"
 
-@admin.register(Review)
-class ReviewAdmin(ImportExportModelAdmin, SimpleHistoryAdmin, admin.ModelAdmin):
-    list_display = ["customer", "rating", "product", "description", "review_date"]
-    list_filter = ["review_date", "product", "rating"]
-    date_hierarchy = "review_date"
-    search_fields = ["customer", "description"]
-    readonly_fields = ["review_date", "rating", "product", "customer", "description"]
+
