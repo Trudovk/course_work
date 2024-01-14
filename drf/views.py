@@ -41,7 +41,15 @@ class ItemViewSet(viewsets.ModelViewSet):
             return Response({"error": "Category parameter is required"}, status=400)
 
 
-
+class ItemUrlViewSet(viewsets.ModelViewSet):
+    """
+    API с товарами по ссылке на категорию /api/catalog/{slug}/
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    def get_queryset(self):
+        slug = self.kwargs['slug']
+        return Item.objects.filter(category__slug=slug)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
@@ -67,7 +75,7 @@ class TodayFiveStarsComentsViewSet(viewsets.ModelViewSet):
     """
     queryset = Review.objects.filter()
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticated]
+
 
     def get_queryset(self):
         return Review.objects.filter(Q(review_date__gte=datetime.date.today()) & Q(rating=5) & ~Q(description='')) 

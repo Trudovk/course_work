@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 from . import views
 
@@ -10,5 +10,6 @@ router.register(r'today_five_stars_coments', views.TodayFiveStarsComentsViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    re_path(r'api/catalog/(?P<slug>.+)/$', views.ItemUrlViewSet.as_view({'get': 'list'})),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
