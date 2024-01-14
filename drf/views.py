@@ -32,9 +32,9 @@ class ItemViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['get'])
     def by_category(self, request):
-        category = request.query_params.get('category', None)
-        if category is not None:
-            items = Item.objects.filter(category__name=category)
+        category_slug = request.query_params.get('category', None)
+        if category_slug is not None:
+            items = Item.objects.filter(category__slug=category_slug)
             serializer = self.get_serializer(items, many=True)
             return Response(serializer.data)
         else:
@@ -57,7 +57,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 class ReviewViewSet(viewsets.ModelViewSet):
     """
@@ -65,8 +64,24 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [permissions.IsAuthenticated]
     pagination_class = AdvicePagination
+
+    @action(detail=True, methods=['post'])
+    def add_comment(self, request, pk=None):
+        comment = request.data.get('comment')
+        customer = request.data.get('customer')
+        rating = request.data.get('rating')
+
+        if not comment or not customer or not rating:
+            return Response({'status': 'Comment, customer name and rating are required'}, status=400)
+
+        review = self.get_object()
+        review.description = comment
+        review.customer = customer
+        review.rating = rating
+        review.save()
+
+        return Response({'status': 'Comment added'})
 
 
 class TodayFiveStarsComentsViewSet(viewsets.ModelViewSet):
