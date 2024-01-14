@@ -71,7 +71,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class TodayFiveStarsComentsViewSet(viewsets.ModelViewSet):
     """
-    API с отзывами с рейтингом 5 за сегодня c содержанием
+    API с отзывами с рейтингом 5 за сегодня c содержанием /api/today_five_stars_coments
     """
     queryset = Review.objects.filter()
     serializer_class = ReviewSerializer
@@ -80,3 +80,21 @@ class TodayFiveStarsComentsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Review.objects.filter(Q(review_date__gte=datetime.date.today()) & Q(rating=5) & ~Q(description='')) 
     # что то хорошее придумаю позже
+
+class ItemReviewViewSet(viewsets.ModelViewSet):
+    """
+    API Опционально ограничивает возвращаемые отзывы до заданного товара и рейтинга,
+    фильтруя по параметрам `item_id` и `rating` в URL. /api/item_reviews?rating=5&item_id=1
+    """
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        queryset = Review.objects.all()
+        item_id = self.request.query_params.get('item_id')
+        rating = self.request.query_params.get('rating')
+        if item_id is not None:
+            queryset = queryset.filter(product__id=item_id)
+        if rating is not None:
+            queryset = queryset.filter(rating=rating)
+        return queryset
