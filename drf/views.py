@@ -28,7 +28,7 @@ class ItemViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'description']
 
     def get_queryset(self):
-        return Item.objects.filter(~Q(price=0) | ~Q(stock=0))
+        return Item.objects.filter((~Q(price=0) | ~Q(stock=0)) & ~Q(description=''))
     
     @action(detail=False, methods=['get'])
     def by_category(self, request):
@@ -50,6 +50,16 @@ class ItemUrlViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         slug = self.kwargs['slug']
         return Item.objects.filter(category__slug=slug)
+    
+
+class ItemSpecialViewSet(viewsets.ModelViewSet):
+    """
+    API с товарами спец предложене /api/special/
+    """
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    def get_queryset(self):
+        return Item.objects.filter(Q(price__gt=1000) & (Q(stock__gt=0) | ~Q(description__startswith='Специальное предложение')))
 
 class CategoryViewSet(viewsets.ModelViewSet):
     """
