@@ -21,6 +21,8 @@ class Item(models.Model):
        verbose_name_plural = "Товары"
        verbose_name = "Товар"
 
+    
+
 
 @admin.register(Item)
 class ItemAdmin(ImportExportModelAdmin, SimpleHistoryAdmin, admin.ModelAdmin):
